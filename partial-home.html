@@ -4,13 +4,22 @@
 </div>
 
 <table>
-	<tr>
-		<td>Name</td>
-		<td>Price</td>
-	</tr>
-	<tr ng-repeat="scotch in topMovies.results">
-		<td>{{scotch.overview}}</td>
-	</tr>
+	<thead>
+		<tr>
+			<td>Title</td>
+			<td>Overview</td>
+			<td>vote_average</td>
+		</tr>
+	</thead>
+	<tbody>
+	<tr ng-repeat="movie in topMovies.results | orderBy:'vote_average':true | limitTo:10">
+			<td>{{movie.title}}</td>
+			<td>{{movie.overview}}</td>
+			<td>{{movie.vote_average}}</td>
+		</tr>
+	</tbody>
+	
+	
 
 </table>
 
