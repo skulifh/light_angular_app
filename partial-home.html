@@ -1,0 +1,17 @@
+<div class="jumbotron text-center">
+    <h1>The Homey Page</h1>
+    <p>This page demonstrates <span class="text-danger">nested</span> views.</p>  
+</div>
+
+<table>
+	<tr>
+		<td>Name</td>
+		<td>Price</td>
+	</tr>
+	<tr ng-repeat="scotch in topMovies.results">
+		<td>{{scotch.overview}}</td>
+	</tr>
+
+</table>
+
+<div ui-view></div>
