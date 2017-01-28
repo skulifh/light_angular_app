@@ -19,7 +19,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 });
 
 routerApp
-.controller('moviesController', function($scope, $http) {
+.controller('moviesController', function($scope, $http, $rootScope) {
 	// $http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
 	// .then(function(response) {
 	//  	$scope.topMovies = response.data;
@@ -33,11 +33,14 @@ routerApp
 		 	$scope.infoText = "Showing top 10 movies:";
 	 		$scope.Movies = $scope.topMovies;
 		});
+
+		$rootScope.moviesScope = $scope;
   	}
 
 	$scope.searchMovies = function() {
 		if ($scope.query.length == 0){
 			$scope.infoText = "Showing top 10 movies:";
+			$scope.Movies = $scope.topMovies;
 		}
 		else if ($scope.query.length >= 3) {
 			$scope.searching = true;
@@ -51,9 +54,23 @@ routerApp
 			$scope.infoText = "Type in at least 3 characters to search";
 			$scope.Movies = $scope.topMovies;
 		}
+
+		$rootScope.moviesScope = $scope;
   	}
 
-  	$scope.getTop10Movies();
+  	$scope.initi = function() {
+  		if ($rootScope.moviesScope != undefined) {
+  			$scope.Movies = $rootScope.moviesScope.Movies;
+  			$scope.query = $rootScope.moviesScope.query;
+  			$scope.infoText = $rootScope.moviesScope.infoText;
+  		}
+
+  		if ($scope.Movies == null) {
+  			$scope.getTop10Movies();
+  		}
+  	}
+
+  	$scope.initi();
 })
 
 .controller('movieController', function($scope, $stateParams, $http) {
