@@ -30,17 +30,25 @@ routerApp
     	$http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
 		.then(function(response) {
 		 	$scope.topMovies = response.data;
+		 	$scope.infoText = "Showing top 10 movies:";
 	 		$scope.Movies = $scope.topMovies;
 		});
   	}
 
 	$scope.searchMovies = function() {
-		if($scope.query.length >= 3) {
+		if ($scope.query.length == 0){
+			$scope.infoText = "Showing top 10 movies:";
+		}
+		else if ($scope.query.length >= 3) {
+			$scope.searching = true;
 			$http.get("https://api.themoviedb.org/3/search/movie?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&query=" + $scope.query + "&page=1&include_adult=false")
 			.then(function(response) {
+				$scope.infoText = "Search results for \"" + $scope.query + "\":";
 			 	$scope.Movies = response.data;
 			});
-		} else {
+		} 
+		else {
+			$scope.infoText = "Type in at least 3 characters to search";
 			$scope.Movies = $scope.topMovies;
 		}
   	}
