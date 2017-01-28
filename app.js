@@ -1,3 +1,21 @@
+class MoviesController {
+    constructor ($http, $scope) {
+        'ngInject';
+        this.$http = $http;
+        this.$scope = $scope;
+        this.getMovies();
+        //this.getMessages();
+    }
+
+    getMovies() {
+        var vm = this;
+        vm.$http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
+	    .then(function(response) {
+	        vm.$scope.topMovies = response.data;
+	    });
+    }
+}
+
 var routerApp = angular.module('routerApp', ['ui.router']);
 
 routerApp.config(function($stateProvider, $urlRouterProvider) {
@@ -18,12 +36,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 });
 
 routerApp
-.controller('moviesController', function($scope, $http) {
-    $http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
-    .then(function(response) {
-        $scope.topMovies = response.data;
-    });
-})
+.controller('moviesController', MoviesController)
 .controller('movieController', function($scope, $stateParams, $http) {
     $http.get("https://api.themoviedb.org/3/movie/" + $stateParams.movieid + "?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US")
     .then(function(response) {

@@ -1,12 +1,25 @@
-<div class="col-md-6" ng-repeat="movie in topMovies.results | orderBy:'vote_average':true | limitTo:10">
-	<div class="thumbnail">
-		<img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="...">
-		<div class="caption">
-			<h3><a ui-sref="movie({movieid: movie.id})">{{movie.title}}</a></h3>
-			<!--<p>{{movie.overview}}</p>
-			<p>{{movie.vote_average}}</p>-->
-		</div>
-    </div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="input-group add-on">
+	      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text" ng-model="query">
+	      <div class="input-group-btn">
+	        <button class="btn btn-default" type="submit" ng-click="searchMovies()"><i class="glyphicon glyphicon-search"></i></button>
+	      </div>
+	    </div>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-md-6" ng-repeat="movie in topMovies.results | orderBy:'vote_average':true | limitTo:10">
+		<div class="thumbnail">
+			<img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="...">
+			<div class="caption">
+				<h3><a ui-sref="movie({movieid: movie.id})">{{movie.title}}</a></h3>
+				<!--<p>{{movie.overview}}</p>
+				<p>{{movie.vote_average}}</p>-->
+			</div>
+	    </div>
+	</div>
 </div>
 
 
