@@ -63,6 +63,7 @@ routerApp
   			$scope.Movies = $rootScope.moviesScope.Movies;
   			$scope.query = $rootScope.moviesScope.query;
   			$scope.infoText = $rootScope.moviesScope.infoText;
+  			$scope.topMovies = $rootScope.moviesScope.topMovies;
   		}
 
   		if ($scope.Movies == null) {
