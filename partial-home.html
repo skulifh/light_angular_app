@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="input-group add-on">
-	      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text" ng-model="query">
+	      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text" ng-model="query" ng-change="searchMovies()">
 	      <div class="input-group-btn">
 	        <button class="btn btn-default" ng-click="searchMovies()"><i class="glyphicon glyphicon-search"></i></button>
 	      </div>
@@ -10,7 +10,7 @@
 </div>
 <br>
 <div class="row">
-	<div class="col-md-6" ng-repeat="movie in topMovies.results | orderBy:'vote_average':true | limitTo:10">
+	<div class="col-md-6" ng-repeat="movie in Movies.results | orderBy:'vote_average':true | limitTo:10">
 		<div class="thumbnail">
 			<img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="...">
 			<div class="caption">

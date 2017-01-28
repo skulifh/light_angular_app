@@ -20,17 +20,32 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 
 routerApp
 .controller('moviesController', function($scope, $http) {
-	$http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
-	.then(function(response) {
-	 	$scope.topMovies = response.data;
-	});
+	// $http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
+	// .then(function(response) {
+	//  	$scope.topMovies = response.data;
+	//  	$scope.Movies = $scope.topMovies;
+	// });
 
-	$scope.searchMovies = function() {
-    	$http.get("https://api.themoviedb.org/3/search/movie?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&query=" + $scope.query + "&page=1&include_adult=false")
+	$scope.getTop10Movies = function() {
+    	$http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
 		.then(function(response) {
 		 	$scope.topMovies = response.data;
+	 		$scope.Movies = $scope.topMovies;
 		});
   	}
+
+	$scope.searchMovies = function() {
+		if($scope.query.length >= 3) {
+			$http.get("https://api.themoviedb.org/3/search/movie?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&query=" + $scope.query + "&page=1&include_adult=false")
+			.then(function(response) {
+			 	$scope.Movies = response.data;
+			});
+		} else {
+			$scope.Movies = $scope.topMovies;
+		}
+  	}
+
+  	$scope.getTop10Movies();
 })
 
 .controller('movieController', function($scope, $stateParams, $http) {
