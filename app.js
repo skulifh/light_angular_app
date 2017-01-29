@@ -18,6 +18,10 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
         });
 });
 
+routerApp.run(function($rootScope) {
+  $rootScope.movieDbApi = "97c9873a035726c716e8254e0a0e8ed1";
+});
+
 routerApp
 .controller('moviesController', function($scope, $http, $rootScope) {
 
@@ -32,7 +36,7 @@ routerApp
 		});
 
 		$rootScope.moviesScope = $scope;
-  	}
+	}
 
 	$scope.searchMovies = function() {
 		if ($scope.query.length == 0){
@@ -58,7 +62,6 @@ routerApp
 	}
 
 	$scope.init = function() {
-    $rootScope.movieDbApi = "97c9873a035726c716e8254e0a0e8ed1";
 		if ($rootScope.moviesScope != undefined) {
 			$scope.Movies = $rootScope.moviesScope.Movies;
 			$scope.query = $rootScope.moviesScope.query;
@@ -74,8 +77,10 @@ routerApp
 	$scope.init();
 })
 
-.controller('movieController', function($scope, $stateParams, $http) {
-    $http.get("https://api.themoviedb.org/3/movie/" + $stateParams.movieid + "?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US")
+.controller('movieController', function($scope, $stateParams, $http, $rootScope) {
+    $http.get("https://api.themoviedb.org/3/movie/" + $stateParams.movieid, {
+      params: { api_key: $rootScope.movieDbApi, language: "en-US" }
+    })
     .then(function(response) {
         $scope.movie = response.data;
     });
