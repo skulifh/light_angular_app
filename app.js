@@ -98,6 +98,24 @@ routerApp
 	$scope.init();
 })
 
+.controller('movieController', function($scope, $stateParams, $http, $rootScope) {
+  $scope.init = function() {
+    $http.get("https://api.themoviedb.org/3/movie/" + $stateParams.movieid, {
+      params: { api_key: $rootScope.movieDbApi, language: "en-US" }
+    })
+    .then(
+      function(response) {
+        $scope.movie = response.data;
+      },
+      function(error) {
+        $scope.infoText = "An error occured! (" + error.status + ". " + error.data.status_message + ")";
+      }
+    );
+  }
+
+  $scope.init();
+})
+
 .controller('tvshowsController', function($scope, $http, $rootScope) {
 
   $scope.getTop10Tvshows = function() {
@@ -147,7 +165,8 @@ routerApp
   }
 
   $scope.init = function() {
-    if ($rootScope.TvshowsScope != undefined) {
+    //alert(JSON.stringify($rootScope.tvshowsScope));
+    if ($rootScope.tvshowsScope != undefined) {
       $scope.Tvshows = $rootScope.tvshowsScope.Tvshows;
       $scope.query = $rootScope.tvshowsScope.query;
       $scope.infoText = $rootScope.tvshowsScope.infoText;
@@ -157,24 +176,6 @@ routerApp
     if ($scope.Tvshows == null) {
       $scope.getTop10Tvshows();
     }
-  }
-
-  $scope.init();
-})
-
-.controller('movieController', function($scope, $stateParams, $http, $rootScope) {
-  $scope.init = function() {
-    $http.get("https://api.themoviedb.org/3/movie/" + $stateParams.movieid, {
-      params: { api_key: $rootScope.movieDbApi, language: "en-US" }
-    })
-    .then(
-      function(response) {
-        $scope.movie = response.data;
-      },
-      function(error) {
-        $scope.infoText = "An error occured! (" + error.status + ". " + error.data.status_message + ")";
-      }
-    );
   }
 
   $scope.init();
