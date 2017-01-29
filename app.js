@@ -15,6 +15,17 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
             url: '/movies/{movieid}',
             templateUrl: 'partial-movie.html',
             controller: 'movieController'
+        })
+        .state('tvshows', {
+            url: '/tvshows',
+            templateUrl: 'partial-tvshows.html',
+            controller: 'tvshowsController',
+            controllerAs: 'tvshows'
+        })
+        .state('tvshow', {
+            url: '/tvshows/{tvshowid}',
+            templateUrl: 'partial-tvshow.html',
+            controller: 'tvshowController'
         });
 });
 
@@ -87,6 +98,70 @@ routerApp
 	$scope.init();
 })
 
+.controller('tvshowsController', function($scope, $http, $rootScope) {
+
+  $scope.getTop10Tvshows = function() {
+    $http.get("https://api.themoviedb.org/3/tv/top_rated", {
+      params: { api_key: $rootScope.movieDbApi, language: "en-US", page: 1 }
+    })
+    .then(
+      function(response) {
+        $scope.topTvshows = response.data;
+        $scope.infoText = "Showing top 10 tvshows:";
+        $scope.Tvshows = $scope.topTvshows;
+      },
+      function(error) {
+        $scope.infoText = "An error occured! (" + error.status + ". " + error.data.status_message + ")";
+      }
+    );
+
+    $rootScope.tvshowsScope = $scope;
+  }
+
+  $scope.searchTvshows = function() {
+    if ($scope.query.length == 0){
+      $scope.infoText = "Showing top 10 tvshows:";
+      $scope.Tvshows = $scope.topTvshows;
+    }
+    else if ($scope.query.length >= 3) {
+      $scope.searching = true;
+      $http.get("https://api.themoviedb.org/3/search/tv", {
+        params: { api_key: $rootScope.movieDbApi, language: "en-US", page: 1, include_adult: false, query: $scope.query }
+      })
+      .then(
+        function(response) {
+          $scope.infoText = "Search results for \"" + $scope.query + "\":";
+          $scope.Tvshows = response.data;
+        },
+        function(error) {
+          $scope.infoText = "An error occured! (" + error.status + ". " + error.data.status_message + ")";
+        }
+      );
+    } 
+    else {
+      $scope.infoText = "Type in at least 3 characters to search";
+      $scope.Tvshows = $scope.topTvshows;
+    }
+
+    $rootScope.tvshowsScope = $scope;
+  }
+
+  $scope.init = function() {
+    if ($rootScope.TvshowsScope != undefined) {
+      $scope.Tvshows = $rootScope.tvshowsScope.Tvshows;
+      $scope.query = $rootScope.tvshowsScope.query;
+      $scope.infoText = $rootScope.tvshowsScope.infoText;
+      $scope.topTvshows = $rootScope.tvshowsScope.topTvshows;
+    }
+
+    if ($scope.Tvshows == null) {
+      $scope.getTop10Tvshows();
+    }
+  }
+
+  $scope.init();
+})
+
 .controller('movieController', function($scope, $stateParams, $http, $rootScope) {
   $scope.init = function() {
     $http.get("https://api.themoviedb.org/3/movie/" + $stateParams.movieid, {
@@ -103,4 +178,24 @@ routerApp
   }
 
   $scope.init();
-});
+})
+
+.controller('tvshowController', function($scope, $stateParams, $http, $rootScope) {
+  $scope.init = function() {
+    $http.get("https://api.themoviedb.org/3/tv/" + $stateParams.tvshowid, {
+      params: { api_key: $rootScope.movieDbApi, language: "en-US" }
+    })
+    .then(
+      function(response) {
+        $scope.tvShow = response.data;
+      },
+      function(error) {
+        $scope.infoText = "An error occured! (" + error.status + ". " + error.data.status_message + ")";
+      }
+    );
+  }
+
+  $scope.init();
+}
+
+);

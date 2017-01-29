@@ -1,0 +1,27 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="input-group add-on">
+	      <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text" ng-model="query" ng-change="searchMovies()">
+	      <div class="input-group-btn">
+	        <button class="btn btn-default" ng-click="searchMovies()"><i class="glyphicon glyphicon-search"></i></button>
+	      </div>
+	    </div>
+	</div>
+</div>
+<br>
+<p>{{infoText}}</p>
+<div class="row">
+	<div class="col-md-6" ng-repeat="tvshow in Tvshows.results | orderBy:'vote_average':true | limitTo:10">
+		<div class="thumbnail">
+			<img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{tvshow.poster_path}}" alt="...">
+			<div class="caption">
+				<h3><a ui-sref="tvshow({tvshowid: tvshow.id})">{{tvshow.name}}</a></h3>
+				<!--<p>{{movie.overview}}</p>
+				<p>{{movie.vote_average}}</p>-->
+			</div>
+	    </div>
+	</div>
+</div>
+
+
+<div ui-view></div>
