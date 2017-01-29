@@ -10,6 +10,8 @@ A web-server was not implemented during this project since that is out of scope 
 
 The solution uses angular promises for requests to the MovieDB API, UI-router for routing, and dependency injection. It then uses the Bootstrap frontend framework to allow for a responsive UI.
 
+The API key for TheMovieDb API will be destroyed in a few days by the developer for security reasons, so if an API key error presents itself then a new API key has to be created and replaced in the <b>app.js</b> file.
+
 
 <h1>Problem</h1>
 Please create a Movie Web App.<br><br>
