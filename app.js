@@ -29,11 +29,16 @@ routerApp
   	$http.get("https://api.themoviedb.org/3/movie/top_rated", {
       params: { api_key: $rootScope.movieDbApi, language: "en-US", page: 1 }
     })
-		.then(function(response) {
-		 	$scope.topMovies = response.data;
-		 	$scope.infoText = "Showing top 10 movies:";
-	 		$scope.Movies = $scope.topMovies;
-		});
+		.then(
+      function(response) {
+  		 	$scope.topMovies = response.data;
+  		 	$scope.infoText = "Showing top 10 movies:";
+  	 		$scope.Movies = $scope.topMovies;
+  		},
+      function(error) {
+        $scope.infoText = "An error occured! (" + error.status + ". " + error.data.status_message + ")";
+      }
+    );
 
 		$rootScope.moviesScope = $scope;
 	}
@@ -48,10 +53,15 @@ routerApp
 			$http.get("https://api.themoviedb.org/3/search/movie", {
         params: { api_key: $rootScope.movieDbApi, language: "en-US", page: 1, include_adult: false, query: $scope.query }
       })
-			.then(function(response) {
-				$scope.infoText = "Search results for \"" + $scope.query + "\":";
-			 	$scope.Movies = response.data;
-			});
+			.then(
+        function(response) {
+  				$scope.infoText = "Search results for \"" + $scope.query + "\":";
+  			 	$scope.Movies = response.data;
+  			},
+        function(error) {
+          $scope.infoText = "An error occured! (" + error.status + ". " + error.data.status_message + ")";
+        }
+      );
 		} 
 		else {
 			$scope.infoText = "Type in at least 3 characters to search";
@@ -78,10 +88,19 @@ routerApp
 })
 
 .controller('movieController', function($scope, $stateParams, $http, $rootScope) {
+  $scope.init = function() {
     $http.get("https://api.themoviedb.org/3/movie/" + $stateParams.movieid, {
       params: { api_key: $rootScope.movieDbApi, language: "en-US" }
     })
-    .then(function(response) {
+    .then(
+      function(response) {
         $scope.movie = response.data;
-    });
+      },
+      function(error) {
+        $scope.infoText = "An error occured! (" + error.status + ". " + error.data.status_message + ")";
+      }
+    );
+  }
+
+  $scope.init();
 });
