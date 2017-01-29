@@ -20,14 +20,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 
 routerApp
 .controller('moviesController', function($scope, $http, $rootScope) {
-	// $http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
-	// .then(function(response) {
-	//  	$scope.topMovies = response.data;
-	//  	$scope.Movies = $scope.topMovies;
-	// });
 
 	$scope.getTop10Movies = function() {
-    	$http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&page=1")
+  	$http.get("https://api.themoviedb.org/3/movie/top_rated", {
+      params: { api_key: $rootScope.movieDbApi, language: "en-US", page: 1 }
+    })
 		.then(function(response) {
 		 	$scope.topMovies = response.data;
 		 	$scope.infoText = "Showing top 10 movies:";
@@ -44,7 +41,9 @@ routerApp
 		}
 		else if ($scope.query.length >= 3) {
 			$scope.searching = true;
-			$http.get("https://api.themoviedb.org/3/search/movie?api_key=97c9873a035726c716e8254e0a0e8ed1&language=en-US&query=" + $scope.query + "&page=1&include_adult=false")
+			$http.get("https://api.themoviedb.org/3/search/movie", {
+        params: { api_key: $rootScope.movieDbApi, language: "en-US", page: 1, include_adult: false, query: $scope.query }
+      })
 			.then(function(response) {
 				$scope.infoText = "Search results for \"" + $scope.query + "\":";
 			 	$scope.Movies = response.data;
@@ -56,22 +55,23 @@ routerApp
 		}
 
 		$rootScope.moviesScope = $scope;
-  	}
+	}
 
-  	$scope.initi = function() {
-  		if ($rootScope.moviesScope != undefined) {
-  			$scope.Movies = $rootScope.moviesScope.Movies;
-  			$scope.query = $rootScope.moviesScope.query;
-  			$scope.infoText = $rootScope.moviesScope.infoText;
-  			$scope.topMovies = $rootScope.moviesScope.topMovies;
-  		}
+	$scope.init = function() {
+    $rootScope.movieDbApi = "97c9873a035726c716e8254e0a0e8ed1";
+		if ($rootScope.moviesScope != undefined) {
+			$scope.Movies = $rootScope.moviesScope.Movies;
+			$scope.query = $rootScope.moviesScope.query;
+			$scope.infoText = $rootScope.moviesScope.infoText;
+			$scope.topMovies = $rootScope.moviesScope.topMovies;
+		}
 
-  		if ($scope.Movies == null) {
-  			$scope.getTop10Movies();
-  		}
-  	}
+		if ($scope.Movies == null) {
+			$scope.getTop10Movies();
+		}
+	}
 
-  	$scope.initi();
+	$scope.init();
 })
 
 .controller('movieController', function($scope, $stateParams, $http) {
