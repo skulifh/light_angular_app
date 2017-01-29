@@ -13,7 +13,7 @@
 <div class="row">
 	<div class="col-md-6" ng-repeat="movie in Movies.results | orderBy:'vote_average':true | limitTo:10">
 		<div class="thumbnail">
-			<img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="...">
+			<img ui-sref="movie({movieid: movie.id})" style="cursor:pointer;" src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{movie.poster_path}}" alt="...">
 			<div class="caption">
 				<h3><a ui-sref="movie({movieid: movie.id})">{{movie.title}}</a></h3>
 				<!--<p>{{movie.overview}}</p>
