@@ -1,6 +1,10 @@
 <h1>Solution notes</h1>
 
-To run open the <b>main.html</b> file in any browser. Chrome browser can have some ross origin request problem but a local web-server should solve that problem. However, Firefox should have no problem in that regards.
+To run open the <b>main.html</b> file in any browser. 
+
+The Angular configurations is located in the app.js file. All of the Angular controllers are located in the 'controllers' folder.
+
+Chrome browser can have some ross origin request problem but a local web-server should solve that problem. However, Firefox should have no problem in that regards.
 
 A web-server was not implemented during this project since that is out of scope for this case. The main focus was on AngularJS and HTML.
 
